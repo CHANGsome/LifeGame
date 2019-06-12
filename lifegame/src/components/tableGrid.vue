@@ -1,8 +1,11 @@
 <template>
   <div>
-    <div class="row" v-for="row in grids">
-        <div class="grid" v-for="item in row" v-bind:class="{live: item}"></div>
+    <div class="row" v-for="n in 100">
+      <div class="grid" v-for="n in 100"></div>
     </div>
+    <!-- <div class="row" v-for="row in grids">
+        <div class="grid" v-for="item in row" v-bind:class="{live: item}"></div>
+    </div> -->
     <button v-on:click="toNextState">Next</button>
   </div>
 </template>
@@ -95,14 +98,18 @@
   }
 </script>
 <style>
+  body{
+    margin: 0;
+    padding: 0;
+  }
   .row{
-    height: 12px;
+    height: 11px;
   }
   .grid{
       width: 10px;
       height: 10px;
       display: inline-block;
-      border: 1px solid #eee;
+      border: 0.5px solid #eee;
       background-color: #555;
   }
   .live{
