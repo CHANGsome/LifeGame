@@ -1,23 +1,30 @@
 <template>
   <div>
-    <div class="row" v-for="row in grids">
-        <div class="grid" v-for="item in row" v-bind:class="{live: item}"></div>
+    <div class="container">
+      <div>
+          <img src="@/assets/game.png" class="logo">
+          <h1 class="title">Game of Life</h1>
+      </div>
+      <div class="row" v-for="row in grids">
+          <div class="grid" v-for="item in row" v-bind:class="{live: item}"></div>
+      </div>
     </div>
-    <button v-on:click="autoPlay('1000')">Start</button>
-    <button v-on:click="toNextState()">Next</button>
+    <Buttons @initData="setData" @next="toNextState" @start="autoPlay" @end="stopPlay"></Buttons>
   </div>
+
 </template>
 <script>
-  import Grid from '@/components/grid.vue'
+  import Buttons from '@/components/buttons.vue'
   export default {
       name: 'tableGrid',
       data: function(){
           return {
-            grids: []
+            grids: [],
+            time: ""
           }
       },
       mounted: function(){
-          this.initTableGrid(45,100);
+          this.initTableGrid(30,80);
       },
       methods: {
         initTableGrid(row, col){  //初始化网格
@@ -39,36 +46,37 @@
           }
           this.grids=arr;       
         },
-        //判断矩阵是否全为0
-        isAllZeroArr(arr){
-          var flag = true;
-          for(let i=0;i<arr.length;i++){
-            for(let j=0;j<arr[i].length;j++){
-              if(arr[i][j]!=0){
-                flag = false;
-                i = arr.length;
-                break;
-              }
+        setData(data){
+          this.setZeorGrids();
+          console.log(this.grids);
+          var arr = this.deepCopy(this.grids);
+          if(data.length == 0){
+            return ;
+          }else{
+            for(let i=0;i<data.length;i++){
+              var x = data[i][0];
+              var y = data[i][1];
+              arr[x+15][y+40] = 1;
             }
           }
-          return flag;
+          this.grids = arr;
         },
-        //判断两个矩阵是否相等
-        isEqualArr(arr1, arr2){
-          var flag = true;
-          for(let i=0;i<arr1.length;i++){
-            for(let j=0;j<arr1[i].length;j++){
-              if(arr1[i][j]!=arr2[i][j]){
-                flag = false;
-                i = arr1.length;
-                break;
+        setZeorGrids(){
+          var arr=[];
+          for(let i=0;i<this.grids.length;i++){
+            arr[i]=[];
+            for(let j=0;j<this.grids[i].length;j++){
+                arr[i][j] = 0;
               }
             }
-          }
-          return flag;
+          this.grids=arr;   
         },
         autoPlay(interval){   //自动进行，停止条件是矩阵为全0或矩阵不再变化
-          setInterval(this.toNextState,interval);
+          clearInterval(this.time);
+          this.time = setInterval(this.toNextState,interval);
+        },
+        stopPlay(){
+          clearInterval(this.time);
         },
         toNextState(){
           var arr = this.deepCopy(this.grids);
@@ -114,11 +122,30 @@
         }
       },
       components: { 
-        Grid 
+        Buttons 
       },
   }
 </script>
 <style>
+  body{
+    margin: 0;
+    padding: 0;
+    background-color: beige;
+  }
+  .container{
+    width: 1300px;
+    margin: 0 auto;
+  }
+  .logo{
+    vertical-align: middle;
+    margin: -12px 20px 0 0;
+    width: 80px;
+  }
+  .title{
+    height: 40px;
+    color: #2ca506;
+    display: inline-block;
+  }
   .row{
     height: 16px;
     display: table;
@@ -127,10 +154,9 @@
       width: 15px;
       height: 15px;
       display: table-cell;
-      border: 0.5px solid #fff;
-      background-color: #999;
+      border: 0.5px solid #999;
   }
   .live{
-    background-color: yellow;
+    background-color: #3fd112;
   }
 </style>
