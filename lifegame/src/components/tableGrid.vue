@@ -153,6 +153,10 @@
   .row{
     height: 16px;
     display: table;
+    border-collapse: collapse;
+  }
+  .row:last-child{
+    border: 1px solid #999;
   }
   .grid{
       width: 15px;
@@ -160,6 +164,7 @@
       display: table-cell;
       border: 0.5px solid #999;
       transition: background-color .3s ease-in;
+      border-bottom: 0;
   }
   .live{
     background-color: #3fd112;
