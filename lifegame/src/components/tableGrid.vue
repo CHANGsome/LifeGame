@@ -50,6 +50,10 @@
           this.setZeorGrids();
           console.log(this.grids);
           var arr = this.deepCopy(this.grids);
+          if(typeof(data)=="string"){
+              this.initTableGrid(30,80);
+              return ;
+          }
           if(data.length == 0){
             return ;
           }else{
@@ -155,6 +159,7 @@
       height: 15px;
       display: table-cell;
       border: 0.5px solid #999;
+      transition: background-color .3s ease-in;
   }
   .live{
     background-color: #3fd112;
