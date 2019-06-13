@@ -16,7 +16,7 @@
       data: function(){
           return {
               selected:0, //下拉框选中值
-              listValue:['Clear','Glider','Small Exploder','Exploder'],
+              listValue:['Clear','Glider','Small Exploder','Exploder',"Random"],
               speedSelect:1000,
               listSpeed:{
                 '2000': 'slow',
@@ -40,6 +40,9 @@
               break;
             case 3:
               data = [[0,0],[0,2],[0,4],[1,0],[1,4],[2,0],[2,4],[3,0],[3,4],[4,0],[4,2],[4,4]]
+              break;
+            case 4:
+              data="random";
               break;
          }
           this.$emit("initData",data)
