@@ -3,8 +3,8 @@
     <div class="row" v-for="row in grids">
         <div class="grid" v-for="item in row" v-bind:class="{live: item}"></div>
     </div>
-    <button v-on:click="initTableGrid(45,100)">Start</button>
-    <button v-on:click="toNextState">Next</button>
+    <button v-on:click="autoPlay('1000')">Start</button>
+    <button v-on:click="toNextState()">Next</button>
   </div>
 </template>
 <script>
@@ -15,6 +15,9 @@
           return {
             grids: []
           }
+      },
+      mounted: function(){
+          this.initTableGrid(45,100);
       },
       methods: {
         initTableGrid(row, col){  //初始化网格
@@ -34,8 +37,38 @@
               }
             }
           }
-          this.grids=arr;
-          console.log(this.grids);         
+          this.grids=arr;       
+        },
+        //判断矩阵是否全为0
+        isAllZeroArr(arr){
+          var flag = true;
+          for(let i=0;i<arr.length;i++){
+            for(let j=0;j<arr[i].length;j++){
+              if(arr[i][j]!=0){
+                flag = false;
+                i = arr.length;
+                break;
+              }
+            }
+          }
+          return flag;
+        },
+        //判断两个矩阵是否相等
+        isEqualArr(arr1, arr2){
+          var flag = true;
+          for(let i=0;i<arr1.length;i++){
+            for(let j=0;j<arr1[i].length;j++){
+              if(arr1[i][j]!=arr2[i][j]){
+                flag = false;
+                i = arr1.length;
+                break;
+              }
+            }
+          }
+          return flag;
+        },
+        autoPlay(interval){   //自动进行，停止条件是矩阵为全0或矩阵不再变化
+          setInterval(this.toNextState,interval);
         },
         toNextState(){
           var arr = this.deepCopy(this.grids);
@@ -49,7 +82,7 @@
               }
             }
           }
-          this.grids=arr;
+          this.grids = arr;
         },
         //获取存活数量
         getNeighborLive(cell){
